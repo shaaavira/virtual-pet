@@ -1,80 +1,126 @@
-/* Container Utama */
-.stage {
-    height: 200px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
+let pet = JSON.parse(localStorage.getItem("chickPet")) || {
+    hunger: 40,
+    thirst: 40,
+    mood: 80,
+    affection: 50,
+    level: 1,
+    sleeping: false
+};
+
+const chick = document.getElementById("chick");
+
+function save() {
+    localStorage.setItem("chickPet", JSON.stringify(pet));
 }
 
-.chick-body {
-    position: relative;
-    width: 100px;
-    animation: idle-bounce 2s infinite ease-in-out;
+function msg(t) {
+    document.getElementById("msg").innerText = t;
 }
 
-/* Kepala */
-.chick-head {
-    width: 70px;
-    height: 65px;
-    background: #ffee00;
-    border-radius: 50%;
-    margin: 0 auto;
-    position: relative;
-    z-index: 3;
-    border: 2px solid #fbc02d;
+function update() {
+    document.getElementById("hungerBar").style.width = pet.hunger + "%";
+    document.getElementById("thirstBar").style.width = pet.thirst + "%";
+    document.getElementById("moodBar").style.width = pet.mood + "%";
+    document.getElementById("affection").innerText = pet.affection;
+    document.getElementById("level").innerText = pet.level;
+
+    chick.className = "chick";
+
+    if (pet.sleeping) chick.classList.add("sleep");
+    else if (pet.mood > 70) chick.classList.add("happy");
+    else if (pet.mood < 40) chick.classList.add("sad");
+
+    save();
 }
 
-/* Badan (Torso) */
-.chick-torso {
-    width: 90px;
-    height: 80px;
-    background: #ffee00;
-    border-radius: 50%;
-    margin: -30px auto 0; /* Menempel ke kepala */
-    position: relative;
-    z-index: 2;
-    border: 2px solid #fbc02d;
+/* aksi */
+function feed() {
+    if (pet.sleeping) return msg("Dia lagi tidur 😴");
+    pet.hunger -= 15;
+    pet.mood += 5;
+    pet.affection += 3;
+    msg("Nyam! 🍗");
+    update();
 }
 
-/* Sayap */
-.wing-left, .wing-right {
-    width: 30px;
-    height: 40px;
-    background: #fbc02d;
-    position: absolute;
-    top: 50px;
-    border-radius: 50%;
-    z-index: 1;
-    transition: transform 0.3s;
-}
-.wing-left { left: -10px; transform: rotate(30deg); }
-.wing-right { right: -10px; transform: rotate(-30deg); }
-
-/* Kaki */
-.leg-left, .leg-right {
-    width: 5px;
-    height: 15px;
-    background: #ff9800;
-    position: absolute;
-    bottom: -10px;
-    border-radius: 5px;
-}
-.leg-left { left: 35px; }
-.leg-right { right: 60px; }
-
-/* Animasi Idle */
-@keyframes idle-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+function drink() {
+    if (pet.sleeping) return msg("Dia lagi tidur 😴");
+    pet.thirst -= 15;
+    pet.mood += 5;
+    msg("Segar! 💧");
+    update();
 }
 
-/* Animasi Makan (Goyang) */
-.eating { animation: shake 0.2s 5; }
-@keyframes shake {
-    0% { transform: rotate(5deg); }
-    50% { transform: rotate(-5deg); }
+function play() {
+    if (pet.sleeping) return msg("Dia lagi tidur 😴");
+    pet.mood += 10;
+    pet.hunger += 5;
+    pet.thirst += 5;
+    pet.affection += 5;
+    msg("Main seru! 🎾");
+    update();
 }
 
-/* Status Ngantuk */
-.sleeping { opacity: 0.6; filter: grayscale(0.5); }
+function sleep() {
+    pet.sleeping = !pet.sleeping;
+    msg(pet.sleeping ? "Zzz..." : "Bangun! 🐥");
+    update();
+}
+
+function sound() {
+    document.getElementById("sound").play();
+    msg("Piu piu! 🐥");
+}
+
+/* greeting */
+function greet() {
+    let hour = new Date().getHours();
+    if (hour < 12) msg("Selamat pagi! 🐥");
+    else if (hour < 18) msg("Selamat siang! ☀️");
+    else msg("Selamat malam! 🌙");
+}
+
+/* chat random */
+const talks = [
+    "Aku di sini 🐥",
+    "Temenin aku ya",
+    "Hehe 🐥",
+    "Kamu lagi apa?",
+    "Aku kangen 😢"
+];
+
+setInterval(() => {
+    if (!pet.sleeping && Math.random() < 0.3) {
+        msg(talks[Math.floor(Math.random() * talks.length)]);
+    }
+}, 5000);
+
+/* idle system */
+setInterval(() => {
+    if (!pet.sleeping) {
+        pet.hunger += 2;
+        pet.thirst += 2;
+        pet.mood -= 1;
+
+        if (pet.hunger > 80) msg("Aku lapar 😢");
+        if (pet.thirst > 80) msg("Aku haus 😢");
+
+        if (Math.random() < 0.1) msg("💩 Ups...");
+
+        if (pet.mood > 100) {
+            pet.level++;
+            pet.mood = 80;
+            msg("Naik level! ⭐");
+        }
+    }
+
+    pet.hunger = Math.min(Math.max(pet.hunger, 0), 100);
+    pet.thirst = Math.min(Math.max(pet.thirst, 0), 100);
+    pet.mood = Math.min(Math.max(pet.mood, 0), 100);
+
+    update();
+}, 3000);
+
+/* first load */
+greet();
+update();
