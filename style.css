@@ -1,126 +1,173 @@
-let pet = JSON.parse(localStorage.getItem("chickPet")) || {
-    hunger: 40,
-    thirst: 40,
-    mood: 80,
-    affection: 50,
-    level: 1,
-    sleeping: false
-};
-
-const chick = document.getElementById("chick");
-
-function save() {
-    localStorage.setItem("chickPet", JSON.stringify(pet));
+body {
+    font-family: Arial;
+    background: linear-gradient(#fff3b0, #ffe08a);
+    text-align: center;
+    margin: 0;
 }
 
-function msg(t) {
-    document.getElementById("msg").innerText = t;
+.container {
+    width: 340px;
+    margin: 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-function update() {
-    document.getElementById("hungerBar").style.width = pet.hunger + "%";
-    document.getElementById("thirstBar").style.width = pet.thirst + "%";
-    document.getElementById("moodBar").style.width = pet.mood + "%";
-    document.getElementById("affection").innerText = pet.affection;
-    document.getElementById("level").innerText = pet.level;
-
-    chick.className = "chick";
-
-    if (pet.sleeping) chick.classList.add("sleep");
-    else if (pet.mood > 70) chick.classList.add("happy");
-    else if (pet.mood < 40) chick.classList.add("sad");
-
-    save();
+/* ================= STATS ================= */
+.bar {
+    height: 10px;
+    background: #eee;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.fill {
+    height: 100%;
+    background: orange;
+    transition: 0.3s;
 }
 
-/* aksi */
-function feed() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.hunger -= 15;
-    pet.mood += 5;
-    pet.affection += 3;
-    msg("Nyam! 🍗");
-    update();
+/* ================= CHICK ================= */
+.stage {
+    margin: 20px 0;
 }
 
-function drink() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.thirst -= 15;
-    pet.mood += 5;
-    msg("Segar! 💧");
-    update();
+.chick-body {
+    width: 130px;
+    height: 130px;
+    margin: auto;
+    position: relative;
+    transition: 0.4s;
 }
 
-function play() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.mood += 10;
-    pet.hunger += 5;
-    pet.thirst += 5;
-    pet.affection += 5;
-    msg("Main seru! 🎾");
-    update();
+/* badan */
+.chick-torso {
+    width: 110px;
+    height: 110px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    box-shadow: inset -6px -6px 0 #fbc02d;
 }
 
-function sleep() {
-    pet.sleeping = !pet.sleeping;
-    msg(pet.sleeping ? "Zzz..." : "Bangun! 🐥");
-    update();
+/* kepala */
+.chick-head {
+    width: 70px;
+    height: 70px;
+    background: #ffeb3b;
+    border-radius: 50%;
+    position: absolute;
+    top: -20px;
+    left: 30px;
 }
 
-function sound() {
-    document.getElementById("sound").play();
-    msg("Piu piu! 🐥");
+/* mata */
+.eye {
+    width: 8px;
+    height: 8px;
+    background: black;
+    border-radius: 50%;
+    position: absolute;
+    top: 25px;
+}
+.eye.left { left: 18px; }
+.eye.right { right: 18px; }
+
+/* paruh */
+.beak {
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid orange;
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-/* greeting */
-function greet() {
-    let hour = new Date().getHours();
-    if (hour < 12) msg("Selamat pagi! 🐥");
-    else if (hour < 18) msg("Selamat siang! ☀️");
-    else msg("Selamat malam! 🌙");
+/* sayap */
+.wing-left, .wing-right {
+    width: 30px;
+    height: 50px;
+    background: #fdd835;
+    border-radius: 50%;
+    position: absolute;
+    top: 40px;
 }
 
-/* chat random */
-const talks = [
-    "Aku di sini 🐥",
-    "Temenin aku ya",
-    "Hehe 🐥",
-    "Kamu lagi apa?",
-    "Aku kangen 😢"
-];
+.wing-left { left: -10px; }
+.wing-right { right: -10px; }
 
-setInterval(() => {
-    if (!pet.sleeping && Math.random() < 0.3) {
-        msg(talks[Math.floor(Math.random() * talks.length)]);
-    }
-}, 5000);
+/* kaki */
+.leg-left, .leg-right {
+    width: 6px;
+    height: 20px;
+    background: orange;
+    position: absolute;
+    bottom: -15px;
+}
 
-/* idle system */
-setInterval(() => {
-    if (!pet.sleeping) {
-        pet.hunger += 2;
-        pet.thirst += 2;
-        pet.mood -= 1;
+.leg-left { left: 45px; }
+.leg-right { right: 45px; }
 
-        if (pet.hunger > 80) msg("Aku lapar 😢");
-        if (pet.thirst > 80) msg("Aku haus 😢");
+/* bubble */
+.bubble {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+}
 
-        if (Math.random() < 0.1) msg("💩 Ups...");
+/* ================= EMOSI ================= */
+.happy {
+    transform: scale(1.1);
+}
 
-        if (pet.mood > 100) {
-            pet.level++;
-            pet.mood = 80;
-            msg("Naik level! ⭐");
-        }
-    }
+.sad {
+    transform: scale(0.95);
+    filter: brightness(0.8);
+}
 
-    pet.hunger = Math.min(Math.max(pet.hunger, 0), 100);
-    pet.thirst = Math.min(Math.max(pet.thirst, 0), 100);
-    pet.mood = Math.min(Math.max(pet.mood, 0), 100);
+.angry {
+    animation: shake 0.3s infinite;
+}
 
-    update();
-}, 3000);
+.sleep {
+    opacity: 0.5;
+}
 
-/* first load */
-greet();
-update();
+/* shake */
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-3px); }
+    50% { transform: translateX(3px); }
+    75% { transform: translateX(-3px); }
+    100% { transform: translateX(0); }
+}
+
+/* idle hidup */
+.idle {
+    animation: float 2s infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+/* button */
+button {
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 10px;
+    background: orange;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
