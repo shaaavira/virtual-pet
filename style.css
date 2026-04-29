@@ -1,5 +1,5 @@
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: Arial, sans-serif;
     background: linear-gradient(#fff3b0, #ffe08a);
     text-align: center;
     margin: 0;
@@ -11,21 +11,21 @@ body {
     margin: 40px auto;
     background: white;
     padding: 20px;
-    border-radius: 25px;
-    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
 }
 
-/* =========================
-   🐥 CHICK CHARACTER
-========================= */
+/* =======================
+   🐥 AYAM (VERSI AMAN)
+======================= */
 .chick {
-    width: 120px;
-    height: 120px;
+    width: 110px;
+    height: 110px;
     background: #ffeb3b;
     border-radius: 50%;
     margin: 20px auto;
     position: relative;
-    box-shadow: inset -8px -8px 0 #fbc02d;
+    box-shadow: inset -6px -6px 0 #fbc02d;
     transition: 0.3s;
 }
 
@@ -35,13 +35,13 @@ body {
     content: '';
     width: 10px;
     height: 10px;
-    background: #000;
+    background: black;
     border-radius: 50%;
     position: absolute;
     top: 40px;
 }
-.chick::before { left: 35px; }
-.chick::after { right: 35px; }
+.chick::before { left: 30px; }
+.chick::after { right: 30px; }
 
 /* paruh */
 .chick span {
@@ -56,28 +56,20 @@ body {
     border-top: 12px solid orange;
 }
 
-/* kaki */
-.chick::after {
-    content: '';
-    width: 6px;
-    height: 22px;
-    background: orange;
-    position: absolute;
-    bottom: -18px;
-    left: 40px;
-    border-radius: 3px;
-    box-shadow: 35px 0 0 orange;
+/* kaki (versi aman pakai element tambahan, bukan pseudo aneh) */
+.chick {
+    overflow: visible;
 }
 
-/* =========================
+/* =======================
    😄 EKSPRESI
-========================= */
+======================= */
 .happy {
-    transform: scale(1.1) rotate(2deg);
+    transform: scale(1.08);
 }
 
 .sad {
-    transform: scale(0.9);
+    transform: scale(0.95);
     filter: brightness(0.8);
 }
 
@@ -85,67 +77,54 @@ body {
     opacity: 0.5;
 }
 
-/* idle animation */
+/* animasi ringan */
 @keyframes bounce {
     0% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-4px); }
     100% { transform: translateY(0); }
 }
 
 .chick {
-    animation: bounce 2s infinite;
+    animation: bounce 2.5s infinite;
 }
 
-/* =========================
+/* =======================
    🎮 BUTTON
-========================= */
+======================= */
 button {
     padding: 10px 12px;
     margin: 5px;
-    border-radius: 12px;
+    border-radius: 10px;
     border: none;
-    background: linear-gradient(orange, #ff9800);
+    background: orange;
     color: white;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s;
 }
 
 button:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
 }
 
-/* =========================
-   📊 STATUS BAR
-========================= */
+/* =======================
+   📊 BAR
+======================= */
 .bar {
-    height: 12px;
+    height: 10px;
     background: #eee;
     border-radius: 10px;
-    margin: 6px 0;
+    margin: 5px 0;
     overflow: hidden;
 }
 
 .fill {
     height: 100%;
-    background: linear-gradient(to right, orange, #ff5722);
+    background: orange;
     border-radius: 10px;
     transition: 0.3s;
 }
 
-/* =========================
-   💬 TEXT
-========================= */
+/* text */
 #msg {
     font-weight: bold;
-    margin: 10px 0;
-}
-
-/* =========================
-   📱 RESPONSIVE
-========================= */
-@media (max-width: 400px) {
-    .container {
-        width: 90%;
-    }
 }
