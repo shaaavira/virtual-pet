@@ -1,58 +1,33 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Virtual Chick 🐥</title>
-
-<link rel="stylesheet" href="style.css">
-
-</head>
-
-<body>
-
 <div class="container">
-    <div id="chick" class="chick">
-    <span></span>
-</div>
-
-    <!-- AYAM -->
-    <div id="chick" class="chick">
-        <span></span>
+    <div class="stats-grid">
+        <div class="stat-box">🍗 Lapar <div class="bar"><div id="hungerBar" class="fill"></div></div></div>
+        <div class="stat-box">💧 Haus <div class="bar"><div id="thirstBar" class="fill"></div></div></div>
+        <div class="stat-box">😊 Mood <div class="bar"><div id="moodBar" class="fill"></div></div></div>
     </div>
 
-    <!-- PESAN -->
-    <p id="msg">Halo! 🐥</p>
-
-    <!-- BUTTON -->
-    <div>
-        <button onclick="feed()">🍗</button>
-        <button onclick="drink()">💧</button>
-        <button onclick="play()">🎾</button>
-        <button onclick="sleep()">😴</button>
-        <button onclick="sound()">🔊</button>
+    <div class="stage">
+        <div id="chick" class="chick-body idle">
+            <div id="emoji-bubble" class="bubble">🐥</div>
+            <div class="chick-head">
+                <div class="eye left"></div>
+                <div class="eye right"></div>
+                <div class="beak"></div>
+            </div>
+            <div class="wing-left"></div>
+            <div class="wing-right"></div>
+            <div class="chick-torso"></div>
+            <div class="leg-left"></div>
+            <div class="leg-right"></div>
+        </div>
     </div>
 
-    <!-- STATUS BAR -->
-    <p>Lapar</p>
-    <div class="bar"><div id="hungerBar" class="fill"></div></div>
+    <p id="msg">Halo! Aku haus dan lapar... 🐥</p>
+    <p>⭐ Level: <span id="level">1</span> | ❤️ XP: <span id="xp">0</span>/5</p>
 
-    <p>Haus</p>
-    <div class="bar"><div id="thirstBar" class="fill"></div></div>
-
-    <p>Mood</p>
-    <div class="bar"><div id="moodBar" class="fill"></div></div>
-
-    <!-- INFO -->
-    <p>❤️ Affection: <span id="affection">0</span></p>
-    <p>⭐ Level: <span id="level">1</span></p>
+    <div class="controls">
+        <button onclick="action('feed')">🍗 Makan</button>
+        <button onclick="action('drink')">💧 Minum</button>
+        <button onclick="action('play')">🎾 Main</button>
+        <button onclick="action('sleep')">😴 Tidur</button>
+    </div>
 </div>
-
-<!-- SOUND -->
-<audio id="sound" src="https://www.soundjay.com/animal/chicken-cluck-1.mp3"></audio>
-
-<!-- JS FILE -->
-<script src="script.js"></script>
-
-</body>
-</html>
