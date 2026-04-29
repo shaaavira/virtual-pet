@@ -5,72 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Virtual Chick 🐥</title>
 
-<style>
-body {
-    font-family: Arial;
-    background: #fff3b0;
-    text-align: center;
-}
+<link rel="stylesheet" href="style.css">
 
-.container {
-    width: 320px;
-    margin: 30px auto;
-    background: white;
-    padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-}
-
-.chick {
-    width: 100px;
-    height: 100px;
-    background: yellow;
-    border-radius: 50%;
-    margin: 20px auto;
-    position: relative;
-    transition: 0.3s;
-}
-
-/* mata */
-.chick::before, .chick::after {
-    content: '';
-    width: 10px;
-    height: 10px;
-    background: black;
-    border-radius: 50%;
-    position: absolute;
-    top: 35px;
-}
-.chick::before { left: 25px; }
-.chick::after { right: 25px; }
-
-/* ekspresi */
-.happy { transform: scale(1.1); }
-.sad { transform: scale(0.9); }
-.sleep { opacity: 0.5; }
-
-button {
-    padding: 10px;
-    margin: 5px;
-    border-radius: 10px;
-    border: none;
-    background: orange;
-    color: white;
-    font-weight: bold;
-}
-
-.bar {
-    height: 10px;
-    background: #eee;
-    border-radius: 10px;
-    margin: 5px 0;
-}
-.fill {
-    height: 100%;
-    background: orange;
-    border-radius: 10px;
-}
-</style>
 </head>
 
 <body>
@@ -78,10 +14,15 @@ button {
 <div class="container">
     <h2>🐥 Virtual Chick</h2>
 
-    <div id="chick" class="chick"></div>
+    <!-- AYAM -->
+    <div id="chick" class="chick">
+        <span></span>
+    </div>
 
+    <!-- PESAN -->
     <p id="msg">Halo! 🐥</p>
 
+    <!-- BUTTON -->
     <div>
         <button onclick="feed()">🍗</button>
         <button onclick="drink()">💧</button>
@@ -90,6 +31,7 @@ button {
         <button onclick="sound()">🔊</button>
     </div>
 
+    <!-- STATUS BAR -->
     <p>Lapar</p>
     <div class="bar"><div id="hungerBar" class="fill"></div></div>
 
@@ -99,115 +41,16 @@ button {
     <p>Mood</p>
     <div class="bar"><div id="moodBar" class="fill"></div></div>
 
-    <p>❤️ Affection: <span id="affection"></span></p>
-    <p>⭐ Level: <span id="level"></span></p>
+    <!-- INFO -->
+    <p>❤️ Affection: <span id="affection">0</span></p>
+    <p>⭐ Level: <span id="level">1</span></p>
 </div>
 
+<!-- SOUND -->
 <audio id="sound" src="https://www.soundjay.com/animal/chicken-cluck-1.mp3"></audio>
 
-<script>
-let pet = JSON.parse(localStorage.getItem("chickPet")) || {
-    hunger: 40,
-    thirst: 40,
-    mood: 80,
-    affection: 50,
-    level: 1,
-    sleeping: false
-};
-
-const chick = document.getElementById("chick");
-
-function save() {
-    localStorage.setItem("chickPet", JSON.stringify(pet));
-}
-
-function update() {
-    document.getElementById("hungerBar").style.width = pet.hunger + "%";
-    document.getElementById("thirstBar").style.width = pet.thirst + "%";
-    document.getElementById("moodBar").style.width = pet.mood + "%";
-    document.getElementById("affection").innerText = pet.affection;
-    document.getElementById("level").innerText = pet.level;
-
-    chick.className = "chick";
-
-    if (pet.sleeping) chick.classList.add("sleep");
-    else if (pet.mood > 70) chick.classList.add("happy");
-    else if (pet.mood < 40) chick.classList.add("sad");
-
-    save();
-}
-
-function msg(t) {
-    document.getElementById("msg").innerText = t;
-}
-
-function feed() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.hunger -= 15;
-    pet.mood += 5;
-    pet.affection += 3;
-    msg("Nyam! 🍗");
-    update();
-}
-
-function drink() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.thirst -= 15;
-    pet.mood += 5;
-    msg("Segar! 💧");
-    update();
-}
-
-function play() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.mood += 10;
-    pet.hunger += 5;
-    pet.thirst += 5;
-    pet.affection += 5;
-    msg("Main seru! 🎾");
-    update();
-}
-
-function sleep() {
-    pet.sleeping = !pet.sleeping;
-    msg(pet.sleeping ? "Zzz..." : "Bangun! 🐥");
-    update();
-}
-
-function sound() {
-    document.getElementById("sound").play();
-    msg("Piu piu! 🐥");
-}
-
-// sistem waktu berjalan
-setInterval(() => {
-    if (!pet.sleeping) {
-        pet.hunger += 2;
-        pet.thirst += 2;
-        pet.mood -= 1;
-
-        if (pet.hunger > 80) msg("Aku lapar 😢");
-        if (pet.thirst > 80) msg("Aku haus 😢");
-
-        if (Math.random() < 0.1) msg("💩 Ups...");
-        
-        if (pet.mood > 100) {
-            pet.level++;
-            pet.mood = 80;
-            msg("Naik level! ⭐");
-        }
-    }
-
-    // clamp biar ga kebablasan
-    pet.hunger = Math.min(Math.max(pet.hunger, 0), 100);
-    pet.thirst = Math.min(Math.max(pet.thirst, 0), 100);
-    pet.mood = Math.min(Math.max(pet.mood, 0), 100);
-
-    update();
-}, 3000);
-
-update();
-</script>
+<!-- JS FILE -->
+<script src="script.js"></script>
 
 </body>
 </html>
