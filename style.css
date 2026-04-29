@@ -1,5 +1,5 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Poppins', sans-serif;
     background: linear-gradient(#fff3b0, #ffe08a);
     text-align: center;
     margin: 0;
@@ -11,115 +11,98 @@ body {
     margin: 40px auto;
     background: white;
     padding: 20px;
-    border-radius: 20px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    border-radius: 25px;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
 }
 
-/* =======================
-   🐥 AYAM (VERSI AMAN)
-======================= */
+/* chick */
 .chick {
     width: 110px;
     height: 110px;
-    background: #ffeb3b;
+    background: radial-gradient(circle at 30% 30%, #fff176, #fbc02d);
     border-radius: 50%;
     margin: 20px auto;
     position: relative;
-    box-shadow: inset -6px -6px 0 #fbc02d;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
 /* mata */
 .chick::before,
 .chick::after {
     content: '';
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     background: black;
     border-radius: 50%;
     position: absolute;
     top: 40px;
 }
-.chick::before { left: 30px; }
-.chick::after { right: 30px; }
+.chick::before { left: 25px; }
+.chick::after { right: 25px; }
 
 /* paruh */
 .chick span {
     position: absolute;
-    width: 0;
-    height: 0;
+    width: 14px;
+    height: 10px;
+    background: orange;
     top: 60px;
     left: 50%;
     transform: translateX(-50%);
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 12px solid orange;
+    border-radius: 50%;
 }
 
-/* kaki (versi aman pakai element tambahan, bukan pseudo aneh) */
-.chick {
-    overflow: visible;
-}
-
-/* =======================
-   😄 EKSPRESI
-======================= */
+/* ekspresi */
 .happy {
-    transform: scale(1.08);
+    transform: scale(1.1) rotate(2deg);
 }
-
 .sad {
-    transform: scale(0.95);
+    transform: scale(0.9);
     filter: brightness(0.8);
 }
-
 .sleep {
     opacity: 0.5;
 }
 
-/* animasi ringan */
+/* animasi idle */
 @keyframes bounce {
     0% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
+    50% { transform: translateY(-6px); }
     100% { transform: translateY(0); }
 }
-
 .chick {
-    animation: bounce 2.5s infinite;
+    animation: bounce 2s infinite;
 }
 
-/* =======================
-   🎮 BUTTON
-======================= */
+/* tombol */
 button {
     padding: 10px 12px;
     margin: 5px;
-    border-radius: 10px;
+    border-radius: 12px;
     border: none;
-    background: orange;
+    background: linear-gradient(orange, #ff9800);
     color: white;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 button:hover {
-    transform: scale(1.05);
+    transform: scale(1.1);
 }
 
-/* =======================
-   📊 BAR
-======================= */
+/* bar */
 .bar {
-    height: 10px;
+    height: 12px;
     background: #eee;
     border-radius: 10px;
-    margin: 5px 0;
+    margin: 6px 0;
     overflow: hidden;
 }
 
 .fill {
     height: 100%;
-    background: orange;
+    background: linear-gradient(to right, orange, #ff5722);
     border-radius: 10px;
     transition: 0.3s;
 }
@@ -127,4 +110,12 @@ button:hover {
 /* text */
 #msg {
     font-weight: bold;
+    margin: 10px 0;
+}
+
+/* responsive */
+@media (max-width: 400px) {
+    .container {
+        width: 90%;
+    }
 }
