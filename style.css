@@ -15,66 +15,90 @@ body {
     box-shadow: 0 15px 25px rgba(0,0,0,0.15);
 }
 
-/* chick */
+/* =========================
+   🐥 CHICK CHARACTER
+========================= */
 .chick {
-    width: 110px;
-    height: 110px;
-    background: radial-gradient(circle at 30% 30%, #fff176, #fbc02d);
+    width: 120px;
+    height: 120px;
+    background: #ffeb3b;
     border-radius: 50%;
     margin: 20px auto;
     position: relative;
-    transition: all 0.3s ease;
+    box-shadow: inset -8px -8px 0 #fbc02d;
+    transition: 0.3s;
 }
 
 /* mata */
 .chick::before,
 .chick::after {
     content: '';
-    width: 12px;
-    height: 12px;
-    background: black;
+    width: 10px;
+    height: 10px;
+    background: #000;
     border-radius: 50%;
     position: absolute;
     top: 40px;
 }
-.chick::before { left: 25px; }
-.chick::after { right: 25px; }
+.chick::before { left: 35px; }
+.chick::after { right: 35px; }
 
 /* paruh */
 .chick span {
     position: absolute;
-    width: 14px;
-    height: 10px;
-    background: orange;
+    width: 0;
+    height: 0;
     top: 60px;
     left: 50%;
     transform: translateX(-50%);
-    border-radius: 50%;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 12px solid orange;
 }
 
-/* ekspresi */
+/* kaki */
+.chick::after {
+    content: '';
+    width: 6px;
+    height: 22px;
+    background: orange;
+    position: absolute;
+    bottom: -18px;
+    left: 40px;
+    border-radius: 3px;
+    box-shadow: 35px 0 0 orange;
+}
+
+/* =========================
+   😄 EKSPRESI
+========================= */
 .happy {
     transform: scale(1.1) rotate(2deg);
 }
+
 .sad {
     transform: scale(0.9);
     filter: brightness(0.8);
 }
+
 .sleep {
     opacity: 0.5;
 }
 
-/* animasi idle */
+/* idle animation */
 @keyframes bounce {
     0% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+    50% { transform: translateY(-5px); }
     100% { transform: translateY(0); }
 }
+
 .chick {
     animation: bounce 2s infinite;
 }
 
-/* tombol */
+/* =========================
+   🎮 BUTTON
+========================= */
 button {
     padding: 10px 12px;
     margin: 5px;
@@ -91,7 +115,9 @@ button:hover {
     transform: scale(1.1);
 }
 
-/* bar */
+/* =========================
+   📊 STATUS BAR
+========================= */
 .bar {
     height: 12px;
     background: #eee;
@@ -107,13 +133,17 @@ button:hover {
     transition: 0.3s;
 }
 
-/* text */
+/* =========================
+   💬 TEXT
+========================= */
 #msg {
     font-weight: bold;
     margin: 10px 0;
 }
 
-/* responsive */
+/* =========================
+   📱 RESPONSIVE
+========================= */
 @media (max-width: 400px) {
     .container {
         width: 90%;
