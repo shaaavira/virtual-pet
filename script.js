@@ -1,8 +1,8 @@
-let pet = JSON.parse(localStorage.getItem("chickPet")) || {
+let pet = JSON.parse(localStorage.getItem("chick")) || {
     hunger: 40,
     thirst: 40,
     mood: 80,
-    affection: 50,
+    xp: 0,
     level: 1,
     sleeping: false
 };
@@ -10,7 +10,7 @@ let pet = JSON.parse(localStorage.getItem("chickPet")) || {
 const chick = document.getElementById("chick");
 
 function save() {
-    localStorage.setItem("chickPet", JSON.stringify(pet));
+    localStorage.setItem("chick", JSON.stringify(pet));
 }
 
 function msg(t) {
@@ -21,81 +21,71 @@ function update() {
     document.getElementById("hungerBar").style.width = pet.hunger + "%";
     document.getElementById("thirstBar").style.width = pet.thirst + "%";
     document.getElementById("moodBar").style.width = pet.mood + "%";
-    document.getElementById("affection").innerText = pet.affection;
-    document.getElementById("level").innerText = pet.level;
 
-    chick.className = "chick";
+    document.getElementById("level").innerText = pet.level;
+    document.getElementById("xp").innerText = pet.xp;
+
+    chick.className = "chick-body idle";
 
     if (pet.sleeping) chick.classList.add("sleep");
     else if (pet.mood > 70) chick.classList.add("happy");
     else if (pet.mood < 40) chick.classList.add("sad");
 
+    if (pet.mood < 20) chick.classList.add("angry");
+
     save();
 }
 
-/* aksi */
-function feed() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.hunger -= 15;
-    pet.mood += 5;
-    pet.affection += 3;
-    msg("Nyam! 🍗");
-    update();
-}
-
-function drink() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.thirst -= 15;
-    pet.mood += 5;
-    msg("Segar! 💧");
-    update();
-}
-
-function play() {
-    if (pet.sleeping) return msg("Dia lagi tidur 😴");
-    pet.mood += 10;
-    pet.hunger += 5;
-    pet.thirst += 5;
-    pet.affection += 5;
-    msg("Main seru! 🎾");
-    update();
-}
-
-function sleep() {
-    pet.sleeping = !pet.sleeping;
-    msg(pet.sleeping ? "Zzz..." : "Bangun! 🐥");
-    update();
-}
-
-function sound() {
-    document.getElementById("sound").play();
-    msg("Piu piu! 🐥");
-}
-
-/* greeting */
-function greet() {
-    let hour = new Date().getHours();
-    if (hour < 12) msg("Selamat pagi! 🐥");
-    else if (hour < 18) msg("Selamat siang! ☀️");
-    else msg("Selamat malam! 🌙");
-}
-
-/* chat random */
-const talks = [
-    "Aku di sini 🐥",
-    "Temenin aku ya",
-    "Hehe 🐥",
-    "Kamu lagi apa?",
-    "Aku kangen 😢"
-];
-
-setInterval(() => {
-    if (!pet.sleeping && Math.random() < 0.3) {
-        msg(talks[Math.floor(Math.random() * talks.length)]);
+/* ================= ACTION ================= */
+function action(type) {
+    if (type === "feed") {
+        pet.hunger -= 15;
+        pet.mood += 5;
+        pet.xp++;
+        msg("Nyam! 🍗");
     }
-}, 5000);
 
-/* idle system */
+    if (type === "drink") {
+        pet.thirst -= 15;
+        pet.mood += 5;
+        pet.xp++;
+        msg("Segar 💧");
+    }
+
+    if (type === "play") {
+        pet.mood += 10;
+        pet.hunger += 5;
+        pet.thirst += 5;
+        pet.xp += 2;
+        msg("Senang main! 🎾");
+    }
+
+    if (type === "sleep") {
+        pet.sleeping = !pet.sleeping;
+        msg(pet.sleeping ? "Zzz..." : "Bangun!");
+    }
+
+    levelSystem();
+    update();
+}
+
+/* ================= LEVEL SYSTEM ================= */
+function levelSystem() {
+    if (pet.xp >= 5) {
+        pet.level++;
+        pet.xp = 0;
+        msg("Naik Level! ⭐");
+    }
+
+    // reset kalau diabaikan
+    if (pet.hunger > 100 || pet.thirst > 100) {
+        pet.level = 1;
+        pet.xp = 0;
+        msg("Aku sakit karena diabaikan 😢 Reset level...");
+    }
+}
+
+/* ================= AUTO SYSTEM ================= */
 setInterval(() => {
     if (!pet.sleeping) {
         pet.hunger += 2;
@@ -104,14 +94,6 @@ setInterval(() => {
 
         if (pet.hunger > 80) msg("Aku lapar 😢");
         if (pet.thirst > 80) msg("Aku haus 😢");
-
-        if (Math.random() < 0.1) msg("💩 Ups...");
-
-        if (pet.mood > 100) {
-            pet.level++;
-            pet.mood = 80;
-            msg("Naik level! ⭐");
-        }
     }
 
     pet.hunger = Math.min(Math.max(pet.hunger, 0), 100);
@@ -121,6 +103,4 @@ setInterval(() => {
     update();
 }, 3000);
 
-/* first load */
-greet();
 update();
